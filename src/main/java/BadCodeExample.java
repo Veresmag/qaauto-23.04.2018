@@ -28,7 +28,7 @@ public class BadCodeExample {
 
         searchFeald.sendKeys(Keys.ENTER);
 
-        sleep(3000);
+        sleep(4000);
 
         List<WebElement> searchResults = webDriver.findElements(By.xpath("//div [@class='srg'] /div [@class='g']"));
 
