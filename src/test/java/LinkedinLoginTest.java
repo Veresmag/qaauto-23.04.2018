@@ -28,7 +28,6 @@ public class LinkedinLoginTest {
 //        Assert.assertEquals(true, formLog.isDisplayed());
 
 
-
         WebElement emailField = webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@type = 'text']"));
         emailField.sendKeys("Veresmag@yandex.ru");
 
@@ -38,16 +37,16 @@ public class LinkedinLoginTest {
         WebElement signInButton =
                 webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@id = 'login-submit']"));
 
-            signInButton.click();
+        signInButton.click();
 
 //        Assert.assertTrue(emailField.isDisplayed(),
 //                "Sign button is not Displayed");
 
-            sleep(5000);
+        sleep(5000);
         Assert.assertEquals(webDriver.getTitle(),
                 "LinkedIn",
                 "Login page Title is wrong");
-            sleep(5000);
+        sleep(5000);
         Assert.assertEquals(webDriver.getCurrentUrl(),
                 "https://www.linkedin.com/feed/",
                 "The link is not correct");
@@ -55,11 +54,72 @@ public class LinkedinLoginTest {
 //        Assert.assertEquals(By.xpath("//li [@id ='profile-nav-item']"),"Tru", "Не тру");
 
         WebElement elementProf = webDriver.findElement(By.xpath("//li [@id ='profile-nav-item']"));
-                Assert.assertEquals(true, elementProf.isDisplayed());
+        Assert.assertEquals(true, elementProf.isDisplayed());
 
         sleep(5000);
         webDriver.close();
     }
 
-}
+
+
 //div [@class ='dropdown closed ember-view']
+
+// Домашня работа на 14.05.2018
+
+     @Test
+    public void reversesuccessfulLoginTest() throws InterruptedException {
+
+    WebDriver webDriver = new FirefoxDriver();
+    webDriver.get("https://www.linkedin.com/");
+
+            webDriver.findElement(By.id("login-submit")).click();
+
+    Assert.assertEquals(webDriver.getCurrentUrl(),
+            "https://www.linkedin.com/",
+            "Incorrect activation of the login form.");
+
+         webDriver.navigate() .refresh();
+
+         WebElement emailField2 = webDriver.findElement(By.id("login-email"));
+         emailField2.sendKeys("Veresmag@yandex.ru");
+
+         webDriver.findElement(By.id("login-submit")).click();
+
+            sleep(3000);
+
+         Assert.assertEquals(webDriver.getCurrentUrl(),
+                 "https://www.linkedin.com/",
+                 "Incorrect activation of the login form.");
+
+         webDriver.navigate() .refresh();
+
+         WebElement fieldPassword = webDriver.findElement (By.id("login-password"));
+         fieldPassword.sendKeys("Veresmag14");
+
+         webDriver.findElement(By.id("login-submit")).click();
+
+         sleep(3000);
+
+         Assert.assertEquals(webDriver.getCurrentUrl(),
+                 "https://www.linkedin.com/",
+                 "Incorrect activation of the login form.");
+
+         sleep(3000);
+         webDriver.navigate() .refresh();
+
+         WebElement emailField3 = webDriver.findElement(By.id("login-email"));
+         emailField3.sendKeys("Veresmag14");
+
+         WebElement fieldPassword2 = webDriver.findElement (By.id("login-password"));
+         fieldPassword2.sendKeys("Veresmag@yandex.ru");
+
+         webDriver.findElement(By.id("login-submit")).click();
+
+         Assert.assertEquals(webDriver.getCurrentUrl(),
+                 "https://www.linkedin.com/uas/login-submit",
+                 "Incorrect activation of the login form.");
+
+    sleep(5000);
+    webDriver.close();
+    }
+}
