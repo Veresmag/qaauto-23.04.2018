@@ -3,18 +3,28 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
 
 public class LinkedinLoginTest {
+    WebDriver webDriver;
+
+    @BeforeMethod
+    public void before (){
+        webDriver = new FirefoxDriver();
+        webDriver.get("https://www.linkedin.com/");
+    }
 
     @Test
     public void successfulLoginTest() throws InterruptedException {
-        WebDriver webDriver = new FirefoxDriver();
-        webDriver.get("https://www.linkedin.com/");
-
 //        Assert.assertEquals("a","b","Probably 'a' is not equal to 'b' ");
+
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage();
+        linkedinLoginPage.login("Veresmag@yandex.ru","Veresmag14");
+
 
         Assert.assertEquals(webDriver.getTitle(),
                 "LinkedIn: Войти или зарегистрироваться",
@@ -27,20 +37,20 @@ public class LinkedinLoginTest {
 //        WebElement formLog = webDriver.findElement(By.xpath("//section"));
 //        Assert.assertEquals(true, formLog.isDisplayed());
 
+//         Мой код 10.05.2018
+//        WebElement emailField = webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@type = 'text']"));
+//        emailField.sendKeys("Veresmag@yandex.ru");
+//
+//        WebElement fieldPassword = webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@type = 'password']"));
+//        fieldPassword.sendKeys("Veresmag14");
+//
+//        WebElement signInButton =
+//                webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@id = 'login-submit']"));
+//
+//        signInButton.click();
 
-        WebElement emailField = webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@type = 'text']"));
-        emailField.sendKeys("Veresmag@yandex.ru");
-
-        WebElement fieldPassword = webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@type = 'password']"));
-        fieldPassword.sendKeys("Veresmag14");
-
-        WebElement signInButton =
-                webDriver.findElement(By.xpath("//form [@class = 'login-form'] /input [@id = 'login-submit']"));
-
-        signInButton.click();
-
-//        Assert.assertTrue(emailField.isDisplayed(),
-//                "Sign button is not Displayed");
+        Assert.assertTrue(signInButton.isDisplayed(),
+                "Sign button is not Displayed");
 
         sleep(5000);
         Assert.assertEquals(webDriver.getTitle(),
@@ -55,9 +65,6 @@ public class LinkedinLoginTest {
 
         WebElement elementProf = webDriver.findElement(By.xpath("//li [@id ='profile-nav-item']"));
         Assert.assertEquals(true, elementProf.isDisplayed());
-
-        sleep(5000);
-        webDriver.close();
     }
 
 
@@ -66,11 +73,8 @@ public class LinkedinLoginTest {
 
 // Домашня работа на 14.05.2018
 
-     @Test
+    @Test
     public void reversesuccessfulLoginTest() throws InterruptedException {
-
-    WebDriver webDriver = new FirefoxDriver();
-    webDriver.get("https://www.linkedin.com/");
 
             webDriver.findElement(By.id("login-submit")).click();
 
@@ -118,8 +122,42 @@ public class LinkedinLoginTest {
          Assert.assertEquals(webDriver.getCurrentUrl(),
                  "https://www.linkedin.com/uas/login-submit",
                  "Incorrect activation of the login form.");
+    }
 
-    sleep(5000);
-    webDriver.close();
+    @Test
+    public void negativeLoginTest() throws InterruptedException {
+        WebElement emailField = webDriver.findElement(By.id("login-email"));
+        WebElement passwordField = webDriver.findElement(By.id("login-password"));
+        WebElement signInButton = webDriver.findElement(By.id("login-submit"));
+
+        Assert.assertTrue(signInButton.isDisplayed(),
+                "Sign In button is not Displayed");
+
+        emailField.sendKeys("Veresmag@yandex.ru");
+        passwordField.sendKeys("1");
+        signInButton.click();
+
+        sleep(3000);
+
+        String currentPageUrl = webDriver.getCurrentUrl();
+        String currentPageTitle = webDriver.getTitle();
+
+        Assert.assertEquals(currentPageUrl,
+                "https://www.linkedin.com/uas/login-submit",
+                "Login-Sumbit page url is wrong");
+        Assert.assertEquals(currentPageTitle,
+                "Войти в LinkedIn",
+                "Login-Sumbit page title is wrong");
+
+        WebElement errorMessage = webDriver.findElement(By.xpath("//div [@role='alert']"));
+
+        Assert.assertEquals(errorMessage.getText(),
+                "При заполнении формы были допущены ошибки. Проверьте и исправьте отмеченные поля.",
+                "Wrong error message text displayed");
+    }
+
+    @AfterMethod
+    public void after () {
+        webDriver.close();
     }
 }
