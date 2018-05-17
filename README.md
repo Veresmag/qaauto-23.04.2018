@@ -16,3 +16,45 @@
 <li> We connect JDK, click next and give the name to our project. Also, do not forget to look at the project, so that you do not have to search for it all over the computer.</li>
 <li> Next, the program will launch the window of our project where we can prescribe our fine code. In perspective.</li>
 </ol>
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class LinkedinLoginPage {
+    private WebDriver webDriver;
+
+    private WebElement emailField;
+    private WebElement passwordField;
+    private WebElement signInButton;
+
+    public LinkedinLoginPage(WebDriver webDriver){
+        this.webDriver=webDriver;
+        initElements();
+    }
+
+    public void initElements () {
+        emailField = webDriver.findElement(By.id("login-email"));
+        passwordField = webDriver.findElement(By.id("login-password"));
+        signInButton = webDriver.findElement(By.id("login-submit"));
+    }
+
+    public void login (String email, String password) {
+        emailField.sendKeys(email);
+        passwordField.sendKeys(password);
+        signInButton.click();
+    }
+
+    public boolean isSighInButtonDisplayed () {
+        return signInButton.isDisplayed();
+    }
+
+    public String getCurrentUrl (){
+        return webDriver.getCurrentUrl();
+    }
+
+    public String getCurrentTittle (){
+        return webDriver.getTitle();
+    }
+}

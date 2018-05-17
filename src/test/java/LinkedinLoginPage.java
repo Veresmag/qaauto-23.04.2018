@@ -5,14 +5,36 @@ import org.openqa.selenium.WebElement;
 public class LinkedinLoginPage {
     private WebDriver webDriver;
 
-   private WebElement emailField = webDriver.findElement(By.id("login-email"));
-   private WebElement passwordField = webDriver.findElement(By.id("login-password"));
-   private WebElement signInButton = webDriver.findElement(By.id("login-submit"));
+    private WebElement emailField;
+    private WebElement passwordField;
+    private WebElement signInButton;
 
+    public LinkedinLoginPage(WebDriver webDriver){
+        this.webDriver=webDriver;
+        initElements();
+    }
+
+    public void initElements () {
+        emailField = webDriver.findElement(By.id("login-email"));
+        passwordField = webDriver.findElement(By.id("login-password"));
+        signInButton = webDriver.findElement(By.id("login-submit"));
+    }
 
     public void login (String email, String password) {
         emailField.sendKeys(email);
         passwordField.sendKeys(password);
         signInButton.click();
+    }
+
+    public boolean isSighInButtonDisplayed () {
+        return signInButton.isDisplayed();
+    }
+
+    public String getCurrentUrl (){
+        return webDriver.getCurrentUrl();
+    }
+
+    public String getCurrentTittle (){
+        return webDriver.getTitle();
     }
 }
