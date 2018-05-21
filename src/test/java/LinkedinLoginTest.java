@@ -1,13 +1,10 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import static java.lang.Thread.sleep;
 
 public class LinkedinLoginTest {
     WebDriver webDriver;
@@ -18,8 +15,16 @@ public class LinkedinLoginTest {
         webDriver.get("https://www.linkedin.com/");
     }
 
-    @Test
-    public void successfulLoginTest() throws InterruptedException {
+    @DataProvider
+    public Object[][] validDataProvider() {
+        return new Object[][]{
+                { "Veresmag@yandex.ru", "Veresmag14"},
+                { "VERESMAG@YANDEX.RU", "Veresmag14"},
+        };
+    }
+
+    @Test (dataProvider = "validDataProvider" )
+    public void successfulLoginTest(String email, String password) {
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
@@ -34,19 +39,21 @@ public class LinkedinLoginTest {
         Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
                 "Sign button is not Displayed");
 
-        linkedinLoginPage.login("Veresmag@yandex.ru","Veresmag14");
+        linkedinLoginPage.login(email, password);
 
         LinkedinHomePage linkedinHomePage = new  LinkedinHomePage (webDriver);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
-                "Проверка безопасности | LinkedIn",
+                "LinkedIn",
                 "Login page Title is wrong");
 
+        Assert.assertEquals(linkedinHomePage.getCurrentUrl(),
+                "https://www.linkedin.com/feed/",
+                "The link is not correct");
     }
 
-
     @Test
-    public void negativeLoginTest() throws InterruptedException {
+    public void negativeReturnedToLoginSubmitTest() {
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
@@ -58,8 +65,6 @@ public class LinkedinLoginTest {
                 "Sign button is not Displayed");
 
         linkedinLoginPage.login("Veresmag@yandex.ru","1");
-
-        sleep(3000);
 
         LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
 
@@ -87,18 +92,18 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativWillJoinTestName(){
+    public void negativWillJoinNameTest(){
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.joinButton();
 
         Assert.assertEquals(linkedinLoginPage.getAllertContentMassage(),
                 "Укажите имя",
-                "There is no inscription about incorrect filling in the registration form" );
+                "There is no inscription about incorrect filling in the registration form");
 
     }
 
     @Test
-    public void negativWillJoinTest() {
+    public void negativWillJoinTest(){
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.loginRegistration("Zorro");
 
@@ -108,7 +113,7 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativInputForm () {
+    public void negativInputFormTest (){
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.login("Veresmag14","Veresmag@yandex.ru");
 

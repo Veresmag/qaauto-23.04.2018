@@ -3,13 +3,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 
-public class LinkedinErrorPage {
-    private WebDriver webDriver;
+public class LinkedinErrorPage extends LinkedinBasePage {
     private WebElement errorMessage;
     private WebElement forgotYorPassword;
 
     public LinkedinErrorPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
+        super(webDriver);
         initElements();
     }
 
@@ -22,13 +21,6 @@ public class LinkedinErrorPage {
        return errorMessage.getText();
     }
 
-    public String getCurrentUrl (){
-        return webDriver.getCurrentUrl();
-    }
-
-    public String getCurrentTittle (){
-        return webDriver.getTitle();
-    }
 
     public String getforgotYorPassword () {
         return forgotYorPassword.getText();
