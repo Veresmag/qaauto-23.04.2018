@@ -9,6 +9,9 @@ public class LinkedinLoginPage extends LinkedinBasePage {
     private WebElement buttonWillJoin;
     private WebElement allertContentMassage;
     private WebElement loginRegistration;
+    private WebElement lastNameRegistration;
+    private WebElement emailRegistration;
+    private WebElement passwordRegistration;
 
     public LinkedinLoginPage(WebDriver webDriver){
         super(webDriver);
@@ -22,6 +25,9 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         buttonWillJoin = webDriver.findElement(By.xpath("//input [@class='registration submit-button']"));
         allertContentMassage = webDriver.findElement(By.xpath("//span [@class='alert-content']"));
         loginRegistration = webDriver.findElement(By.id("reg-firstname"));
+        lastNameRegistration = webDriver.findElement(By.id("reg-lastname"));
+        emailRegistration = webDriver.findElement(By.id("reg-email"));
+        passwordRegistration = webDriver.findElement(By.id("reg-password"));
     }
 
     public void login (String email, String password) {
@@ -45,6 +51,14 @@ public class LinkedinLoginPage extends LinkedinBasePage {
 
     public void loginRegistration (String name){
         loginRegistration.sendKeys(name);
+        buttonWillJoin.click();
+    }
+
+    public void formRegistration (String name, String lastName, String email, String password){
+        loginRegistration.sendKeys(name);
+        lastNameRegistration.sendKeys(lastName);
+        emailRegistration.sendKeys(email);
+        passwordRegistration.sendKeys(password);
         buttonWillJoin.click();
     }
 }

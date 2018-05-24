@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 public class LinkedinErrorPage extends LinkedinBasePage {
     private WebElement errorMessage;
     private WebElement forgotYorPassword;
+    private WebElement emailInput;
+    private WebElement passwordInput;
+    private WebElement buttonSignIn;
 
     public LinkedinErrorPage(WebDriver webDriver) {
         super(webDriver);
@@ -15,6 +18,15 @@ public class LinkedinErrorPage extends LinkedinBasePage {
     public void initElements() {
         errorMessage = webDriver.findElement(By.xpath("//div [@role='alert']"));
         forgotYorPassword = webDriver.findElement(By.xpath("//div [@class='forgot-password-container'] //a"));
+        emailInput = webDriver.findElement(By.id("session_key-login"));
+        passwordInput = webDriver.findElement(By.id("session_password-login"));
+        buttonSignIn = webDriver.findElement(By.id("btn-primary"));
+    }
+
+    public void loginSubmitForm (String email, String password) {
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        buttonSignIn.click();
     }
 
     public String getTextErrorMessage() {
@@ -25,4 +37,6 @@ public class LinkedinErrorPage extends LinkedinBasePage {
     public String getforgotYorPassword () {
         return forgotYorPassword.getText();
     }
+
+
 }

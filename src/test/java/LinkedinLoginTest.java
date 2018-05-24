@@ -10,7 +10,7 @@ public class LinkedinLoginTest {
     WebDriver webDriver;
 
     @BeforeMethod
-    public void before (){
+    public void before() {
         webDriver = new FirefoxDriver();
         webDriver.get("https://www.linkedin.com/");
     }
@@ -18,12 +18,12 @@ public class LinkedinLoginTest {
     @DataProvider
     public Object[][] validDataProvider() {
         return new Object[][]{
-                { "Veresmag@yandex.ru", "Veresmag14"},
-                { "VERESMAG@YANDEX.RU", "Veresmag14"},
+                {"Veresmag@yandex.ru", "Veresmag14"},
+                {"VERESMAG@YANDEX.RU", "Veresmag14"},
         };
     }
 
-    @Test (dataProvider = "validDataProvider" )
+    @Test(dataProvider = "validDataProvider")
     public void successfulLoginTest(String email, String password) {
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
@@ -41,7 +41,7 @@ public class LinkedinLoginTest {
 
         linkedinLoginPage.login(email, password);
 
-        LinkedinHomePage linkedinHomePage = new  LinkedinHomePage (webDriver);
+        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
                 "LinkedIn",
@@ -64,7 +64,7 @@ public class LinkedinLoginTest {
         Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
                 "Sign button is not Displayed");
 
-        linkedinLoginPage.login("Veresmag@yandex.ru","1");
+        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
         LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
 
@@ -81,9 +81,9 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativeRegistrationTest(){
+    public void negativeRegistrationTest() {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-        linkedinLoginPage.login("Veresmag@yandex.ru","1");
+        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
         LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
         Assert.assertEquals(linkedinErrorPage.getforgotYorPassword(),
@@ -92,7 +92,7 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativWillJoinNameTest(){
+    public void negativWillJoinNameTest() {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.joinButton();
 
@@ -103,27 +103,98 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativWillJoinTest(){
+    public void negativWillJoinTest() {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.loginRegistration("Zorro");
 
         Assert.assertEquals(linkedinLoginPage.getAllertContentMassage(),
                 "Укажите фамилию",
-                "There is no inscription about incorrect filling in the registration form" );
+                "There is no inscription about incorrect filling in the registration form");
     }
 
     @Test
-    public void negativInputFormTest (){
+    public void negativInputFormTest() {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-        linkedinLoginPage.login("Veresmag14","Veresmag@yandex.ru");
+        linkedinLoginPage.login("Veresmag14", "Veresmag@yandex.ru");
 
         Assert.assertEquals(linkedinLoginPage.getCurrentUrl(),
                 "https://www.linkedin.com/uas/login-submit",
                 "The link is not correct");
     }
 
+    @DataProvider
+    public Object[][] validNegativLoginProvider() {
+        return new Object[][]{
+                {"", "Veresmag14"},
+                {"Veresmag@yandex.ru", ""},
+                {"", ""}
+        };
+    }
+
+    @Test(dataProvider = "validNegativLoginProvider")
+    public void negativeLoginSubmitTest(String email, String password) {
+
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+
+        Assert.assertEquals(linkedinLoginPage.getCurrentTittle(),
+                "LinkedIn: Войти или зарегистрироваться",
+                "Login page Title is wrong");
+
+        Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
+                "Sign button is not Displayed");
+
+        linkedinLoginPage.login(email, password);
+
+        Assert.assertEquals(linkedinLoginPage.getCurrentUrl(),
+                "https://www.linkedin.com/",
+                "This link is not correct");
+    }
+
+    @DataProvider
+    public Object[][] validNegativRegistrationProvider() {
+        return new Object[][]{
+                {"Ярослав", "","Veresmag@yandex.ru",""},
+                {"", "Козик","","666666"},
+                {"Ярослав", "","","666666"},
+                {"","Козик","Veresmag@yandex.ru","666666"},
+                {"Ярослав", "","Veresmag@yandex.ru","666666"},
+        };
+    }
+
+    @Test (dataProvider = "validNegativRegistrationProvider")
+    public void negativeRegistrationTest2(String name, String lastName, String email, String password ) {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        linkedinLoginPage.formRegistration(name, lastName, email, password);
+
+        Assert.assertEquals(linkedinLoginPage.getCurrentUrl(),
+                "https://www.linkedin.com/",
+                "The link is not correct");
+    }
+
+    @DataProvider
+    public Object[][] validLoginSubmitProvider() {
+        return new Object[][]{
+                {"", "Veresmag"},
+                {"Veresmag@yandex.ru", ""},
+                {"", ""}
+        };
+    }
+
+    @Test (dataProvider = "validLoginSubmitProvider")
+    public void neativLoginSubmitForm (String email, String password){
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
+        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
+
+        LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
+        linkedinErrorPage.loginSubmitForm(email, password);
+
+        Assert.assertEquals(linkedinErrorPage.getCurrentUrl(),
+                "https://www.linkedin.com/uas/login-submit",
+                "The link is not correct");
+    }
+
     @AfterMethod
-    public void after () {
+    public void after() {
         webDriver.close();
     }
 }
