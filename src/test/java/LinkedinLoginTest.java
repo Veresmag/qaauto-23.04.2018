@@ -40,7 +40,6 @@ public class LinkedinLoginTest {
                 "Sign button is not Displayed");
 
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(email, password);
-//        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
                 "LinkedIn",
@@ -52,7 +51,7 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativeReturnedToLoginSubmitTest() {
+    public void negativeReturnedToLoginSubmitTest(String email, String password) {
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
@@ -65,7 +64,7 @@ public class LinkedinLoginTest {
 
         linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
-        LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
+        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
 
         Assert.assertEquals(linkedinErrorPage.getCurrentUrl(),
                 "https://www.linkedin.com/uas/login-submit",
@@ -80,11 +79,11 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativeRegistrationTest() {
+    public void negativeRegistrationTest(String email, String password) {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
-        LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
+        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
         Assert.assertEquals(linkedinErrorPage.getforgotYorPassword(),
                 "Забыли пароль?",
                 "Missing 'Forgot Password' button");
@@ -185,8 +184,7 @@ public class LinkedinLoginTest {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
-        LinkedinErrorPage linkedinErrorPage = new LinkedinErrorPage(webDriver);
-        linkedinErrorPage.loginSubmitForm(email, password);
+        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
 
         Assert.assertEquals(linkedinErrorPage.getCurrentUrl(),
                 "https://www.linkedin.com/uas/login-submit",

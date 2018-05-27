@@ -1,26 +1,29 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 
 public class LinkedinErrorPage extends LinkedinBasePage {
+
+    @FindBy (xpath ="//div [@role='alert']")
     private WebElement errorMessage;
+
+    @FindBy (xpath ="//div [@class='forgot-password-container'] //a" )
     private WebElement forgotYorPassword;
+
+    @FindBy (id = "session_key-login")
     private WebElement emailInput;
+
+    @FindBy (id ="session_password-login" )
     private WebElement passwordInput;
+
+    @FindBy (id ="btn-primary" )
     private WebElement buttonSignIn;
 
     public LinkedinErrorPage(WebDriver webDriver) {
         super(webDriver);
-        initElements();
-    }
-
-    public void initElements() {
-        errorMessage = webDriver.findElement(By.xpath("//div [@role='alert']"));
-        forgotYorPassword = webDriver.findElement(By.xpath("//div [@class='forgot-password-container'] //a"));
-        emailInput = webDriver.findElement(By.id("session_key-login"));
-        passwordInput = webDriver.findElement(By.id("session_password-login"));
-        buttonSignIn = webDriver.findElement(By.id("btn-primary"));
+        PageFactory.initElements(webDriver, this);
     }
 
     public void loginSubmitForm (String email, String password) {

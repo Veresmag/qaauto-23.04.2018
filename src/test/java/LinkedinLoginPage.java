@@ -20,7 +20,7 @@ public class LinkedinLoginPage extends LinkedinBasePage {
     @FindBy (xpath = "//span [@class='alert-content']")
     private WebElement allertContentMassage;
 
-    @FindBy (xpath = "reg-firstname")
+    @FindBy (id = "reg-firstname")
     private WebElement loginRegistration;
 
     @FindBy (id ="reg-firstname" )
@@ -42,6 +42,13 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         passwordField.sendKeys(password);
         signInButton.click();
         return PageFactory.initElements(webDriver, LinkedinHomePage.class);
+    }
+
+    public LinkedinErrorPage loginSubmitPage (String email, String password) {
+        emailField.sendKeys(email);
+        passwordField.sendKeys(password);
+        signInButton.click();
+        return PageFactory.initElements(webDriver, LinkedinErrorPage.class);
     }
 
     public boolean isSighInButtonDisplayed () {
