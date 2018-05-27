@@ -42,7 +42,7 @@ public class LinkedinLoginTest {
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(email, password);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
-                "LinkedIn",
+                "Проверка безопасности | LinkedIn",
                 "Login page Title is wrong");
 
         Assert.assertEquals(linkedinHomePage.getCurrentUrl(),
@@ -51,7 +51,7 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativeReturnedToLoginSubmitTest(String email, String password) {
+    public void negativeReturnedToLoginSubmitTest() {
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
 
@@ -62,9 +62,7 @@ public class LinkedinLoginTest {
         Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
                 "Sign button is not Displayed");
 
-        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
-
-        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
+        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage("Veresmag@yandex.ru", "1");
 
         Assert.assertEquals(linkedinErrorPage.getCurrentUrl(),
                 "https://www.linkedin.com/uas/login-submit",
@@ -79,11 +77,9 @@ public class LinkedinLoginTest {
     }
 
     @Test
-    public void negativeRegistrationTest(String email, String password) {
+    public void negativeRegistrationTest() {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
-
-        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
+        LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage("Veresmag@yandex.ru", "1");
         Assert.assertEquals(linkedinErrorPage.getforgotYorPassword(),
                 "Забыли пароль?",
                 "Missing 'Forgot Password' button");
@@ -182,12 +178,11 @@ public class LinkedinLoginTest {
     @Test (dataProvider = "validLoginSubmitProvider")
     public void negativLoginSubmitForm (String email, String password){
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-        linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
         LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage(email, password);
 
         Assert.assertEquals(linkedinErrorPage.getCurrentUrl(),
-                "https://www.linkedin.com/uas/login-submit",
+                "https://www.linkedin.com/",
                 "The link is not correct");
     }
 
