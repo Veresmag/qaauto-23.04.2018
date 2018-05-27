@@ -1,39 +1,47 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LinkedinLoginPage extends LinkedinBasePage {
+
+    @FindBy (id = "login-email")
     private WebElement emailField;
+
+    @FindBy (id ="login-password")
     private WebElement passwordField;
+
+    @FindBy (id = "login-submit")
     private WebElement signInButton;
+
+    @FindBy (xpath ="//input [@class='registration submit-button']" )
     private WebElement buttonWillJoin;
+
+    @FindBy (xpath = "//span [@class='alert-content']")
     private WebElement allertContentMassage;
+
+    @FindBy (xpath = "reg-firstname")
     private WebElement loginRegistration;
+
+    @FindBy (id ="reg-firstname" )
     private WebElement lastNameRegistration;
+
+    @FindBy (id = "reg-email")
     private WebElement emailRegistration;
+
+    @FindBy (id = "reg-password")
     private WebElement passwordRegistration;
 
     public LinkedinLoginPage(WebDriver webDriver){
         super(webDriver);
-        initElements();
+        PageFactory.initElements(webDriver, this);
     }
 
-    public void initElements () {
-        emailField = webDriver.findElement(By.id("login-email"));
-        passwordField = webDriver.findElement(By.id("login-password"));
-        signInButton = webDriver.findElement(By.id("login-submit"));
-        buttonWillJoin = webDriver.findElement(By.xpath("//input [@class='registration submit-button']"));
-        allertContentMassage = webDriver.findElement(By.xpath("//span [@class='alert-content']"));
-        loginRegistration = webDriver.findElement(By.id("reg-firstname"));
-        lastNameRegistration = webDriver.findElement(By.id("reg-lastname"));
-        emailRegistration = webDriver.findElement(By.id("reg-email"));
-        passwordRegistration = webDriver.findElement(By.id("reg-password"));
-    }
-
-    public void login (String email, String password) {
+    public LinkedinHomePage login (String email, String password) {
         emailField.sendKeys(email);
         passwordField.sendKeys(password);
         signInButton.click();
+        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
     }
 
     public boolean isSighInButtonDisplayed () {

@@ -39,9 +39,8 @@ public class LinkedinLoginTest {
         Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
                 "Sign button is not Displayed");
 
-        linkedinLoginPage.login(email, password);
-
-        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
+        LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(email, password);
+//        LinkedinHomePage linkedinHomePage = new LinkedinHomePage(webDriver);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
                 "LinkedIn",
@@ -158,6 +157,7 @@ public class LinkedinLoginTest {
                 {"Ярослав", "","","666666"},
                 {"","Козик","Veresmag@yandex.ru","666666"},
                 {"Ярослав", "","Veresmag@yandex.ru","666666"},
+                {"","","",""}
         };
     }
 
@@ -181,7 +181,7 @@ public class LinkedinLoginTest {
     }
 
     @Test (dataProvider = "validLoginSubmitProvider")
-    public void neativLoginSubmitForm (String email, String password){
+    public void negativLoginSubmitForm (String email, String password){
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
         linkedinLoginPage.login("Veresmag@yandex.ru", "1");
 
