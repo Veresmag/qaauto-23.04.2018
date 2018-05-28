@@ -12,24 +12,9 @@ public class LinkedinErrorPage extends LinkedinBasePage {
     @FindBy (xpath ="//div [@class='forgot-password-container'] //a" )
     private WebElement forgotYorPassword;
 
-    @FindBy (id = "session_key-login")
-    private WebElement emailInput;
-
-    @FindBy (id ="session_password-login" )
-    private WebElement passwordInput;
-
-    @FindBy (id ="btn-primary" )
-    private WebElement buttonSignIn;
-
     public LinkedinErrorPage(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
-    }
-
-    public void loginSubmitForm (String email, String password) {
-        emailInput.sendKeys(email);
-        passwordInput.sendKeys(password);
-        buttonSignIn.click();
     }
 
     public String getTextErrorMessage() {
