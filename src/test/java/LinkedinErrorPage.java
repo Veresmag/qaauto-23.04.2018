@@ -17,6 +17,10 @@ public class LinkedinErrorPage extends LinkedinBasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    boolean isPageLoaded() {
+        return false;
+    }
+
     public String getTextErrorMessage() {
        return errorMessage.getText();
     }

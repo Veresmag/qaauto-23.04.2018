@@ -6,12 +6,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class LinkedinLoginTest {
     WebDriver webDriver;
 
     @BeforeMethod
     public void before() {
         webDriver = new FirefoxDriver();
+//        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         webDriver.get("https://www.linkedin.com/");
     }
 
@@ -19,7 +22,7 @@ public class LinkedinLoginTest {
     public Object[][] validDataProvider() {
         return new Object[][]{
                 {"Veresmag@yandex.ru", "Veresmag14"},
-                {"VERESMAG@YANDEX.RU", "Veresmag14"},
+//                {"VERESMAG@YANDEX.RU", "Veresmag14"},
         };
     }
 
@@ -36,13 +39,13 @@ public class LinkedinLoginTest {
                 "https://www.linkedin.com/",
                 "The link is not correct");
 
-        Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
-                "Sign button is not Displayed");
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(),
+                "Login Page is not Loaded");
 
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(email, password);
 
         Assert.assertEquals(linkedinHomePage.getCurrentTittle(),
-                "Проверка безопасности | LinkedIn",
+                "LinkedIn",
                 "Login page Title is wrong");
 
         Assert.assertEquals(linkedinHomePage.getCurrentUrl(),
@@ -59,8 +62,8 @@ public class LinkedinLoginTest {
                 "LinkedIn: Войти или зарегистрироваться",
                 "Login page Title is wrong");
 
-        Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
-                "Sign button is not Displayed");
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(),
+                "Login Page is not Loaded");
 
         LinkedinErrorPage linkedinErrorPage = linkedinLoginPage.loginSubmitPage("Veresmag@yandex.ru", "1");
 
@@ -134,8 +137,8 @@ public class LinkedinLoginTest {
                 "LinkedIn: Войти или зарегистрироваться",
                 "Login page Title is wrong");
 
-        Assert.assertTrue(linkedinLoginPage.isSighInButtonDisplayed(),
-                "Sign button is not Displayed");
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(),
+                "Login Page is not Loaded");
 
         linkedinLoginPage.login(email, password);
 

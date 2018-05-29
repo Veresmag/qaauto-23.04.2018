@@ -5,55 +5,77 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LinkedinLoginPage extends LinkedinBasePage {
 
-    @FindBy (id = "login-email")
+    @FindBy(id = "login-email")
     private WebElement emailField;
 
-    @FindBy (id ="login-password")
+    @FindBy(id = "login-password")
     private WebElement passwordField;
 
-    @FindBy (id = "login-submit")
+    @FindBy(id = "login-submit")
     private WebElement signInButton;
 
-    @FindBy (xpath ="//input [@class='registration submit-button']" )
+    @FindBy(xpath = "//input [@class='registration submit-button']")
     private WebElement buttonWillJoin;
 
-    @FindBy (xpath = "//span [@class='alert-content']")
+    @FindBy(xpath = "//span [@class='alert-content']")
     private WebElement allertContentMassage;
 
-    @FindBy (id = "reg-firstname")
+    @FindBy(id = "reg-firstname")
     private WebElement loginRegistration;
 
-    @FindBy (id ="reg-firstname" )
+    @FindBy(id = "reg-firstname")
     private WebElement lastNameRegistration;
 
-    @FindBy (id = "reg-email")
+    @FindBy(id = "reg-email")
     private WebElement emailRegistration;
 
-    @FindBy (id = "reg-password")
+    @FindBy(id = "reg-password")
     private WebElement passwordRegistration;
 
-    public LinkedinLoginPage(WebDriver webDriver){
+    public LinkedinLoginPage(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
-    public LinkedinHomePage login (String email, String password) {
-        emailField.sendKeys(email);
-        passwordField.sendKeys(password);
-        signInButton.click();
-        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
-    }
-
-    public LinkedinErrorPage loginSubmitPage (String email, String password) {
-        emailField.sendKeys(email);
-        passwordField.sendKeys(password);
-        signInButton.click();
-        return PageFactory.initElements(webDriver, LinkedinErrorPage.class);
-    }
-
-    public boolean isSighInButtonDisplayed () {
+    @Override
+    public boolean isPageLoaded() {
         return signInButton.isDisplayed();
     }
+
+//    public LinkedinHomePage login(String email, String password) {
+//        emailField.sendKeys(email);
+//        passwordField.sendKeys(password);
+//        signInButton.click();
+////        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
+//        return new LinkedinHomePage(webDriver);
+//    }
+
+    public LinkedinErrorPage loginSubmitPage(String email, String password) {
+        emailField.sendKeys(email);
+        passwordField.sendKeys(password);
+        signInButton.click();
+//        return PageFactory.initElements(webDriver, LinkedinErrorPage.class);
+        return new LinkedinErrorPage(webDriver);
+    }
+
+    public <T> T login(String email, String password) {
+        emailField.sendKeys(email);
+        passwordField.sendKeys(password);
+        signInButton.click();
+        if (getCurrentUrl().contains("/feed")) {
+            return (T) new LinkedinHomePage(webDriver);
+        }
+        if (getCurrentUrl().contains("/login-submit")) {
+            return (T) new LinkedinErrorPage(webDriver);
+        } else {
+            return (T) this;
+        }
+    }
+
+
+//    public boolean isSighInButtonDisplayed () {
+//        return signInButton.isDisplayed();
+//    }
 
 
     public void joinButton (){
