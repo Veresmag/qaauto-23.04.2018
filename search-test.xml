@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Linkedin">
+
+    <test name="Login Test">
+        <classes>
+            <class name="test.LinkedinSearchTest" />
+        </classes>
+    </test>
+</suite>

@@ -1,22 +1,16 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+package test;
+
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import page.LinkedinErrorPage;
+import page.LinkedinHomePage;
+import page.LinkedinLoginPage;
+import page.LinkedinRequestPasswordReset;
+import util.GMailService;
 
-import java.util.concurrent.TimeUnit;
 
-public class LinkedinLoginTest {
-    WebDriver webDriver;
-
-    @BeforeMethod
-    public void before() {
-        webDriver = new FirefoxDriver();
-//        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        webDriver.get("https://www.linkedin.com/");
-    }
+public class LinkedinLoginTest extends LinkedinBaseTest {
 
     @DataProvider
     public Object[][] validDataProvider() {
@@ -28,9 +22,6 @@ public class LinkedinLoginTest {
 
     @Test(dataProvider = "validDataProvider")
     public void successfulLoginTest(String email, String password) {
-
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(webDriver);
-
         Assert.assertEquals(linkedinLoginPage.getCurrentTittle(),
                 "LinkedIn: Войти или зарегистрироваться",
                 "Login page Title is wrong");
@@ -189,8 +180,15 @@ public class LinkedinLoginTest {
                 "The link is not correct");
     }
 
-    @AfterMethod
-    public void after() {
-        webDriver.close();
+    @Test
+    public void successResetPasswordTest () {
+        LinkedinRequestPasswordReset linkedinRequestPasswordReset = linkedinLoginPage.setForgotYourPassword();
+
+        GMailService gMailService = new GMailService("testeverad2@gmail.com","everad123");
+        gMailService.connect();
+
+        linkedinRequestPasswordReset.inputEmailOrPhone("testeverad2@gmail.com");
+
     }
+
 }

@@ -1,3 +1,5 @@
+package page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,29 +34,29 @@ public class LinkedinLoginPage extends LinkedinBasePage {
     @FindBy(id = "reg-password")
     private WebElement passwordRegistration;
 
+    @FindBy(xpath = "//a[@class='link-forgot-password']")
+    private WebElement forgotYourPassword;
+
+
+
     public LinkedinLoginPage(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
-    @Override
-    public boolean isPageLoaded() {
-        return signInButton.isDisplayed();
+    public void joinButton (){
+        buttonWillJoin.click();
     }
 
-//    public LinkedinHomePage login(String email, String password) {
-//        emailField.sendKeys(email);
-//        passwordField.sendKeys(password);
-//        signInButton.click();
-////        return PageFactory.initElements(webDriver, LinkedinHomePage.class);
-//        return new LinkedinHomePage(webDriver);
-//    }
+    public boolean isPageLoaded() {
+        waitUntilElementIsClickable(signInButton, 20);
+        return signInButton.isDisplayed();
+    }
 
     public LinkedinErrorPage loginSubmitPage(String email, String password) {
         emailField.sendKeys(email);
         passwordField.sendKeys(password);
         signInButton.click();
-//        return PageFactory.initElements(webDriver, LinkedinErrorPage.class);
         return new LinkedinErrorPage(webDriver);
     }
 
@@ -67,19 +69,10 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         }
         if (getCurrentUrl().contains("/login-submit")) {
             return (T) new LinkedinErrorPage(webDriver);
-        } else {
+        }
+        else {
             return (T) this;
         }
-    }
-
-
-//    public boolean isSighInButtonDisplayed () {
-//        return signInButton.isDisplayed();
-//    }
-
-
-    public void joinButton (){
-      buttonWillJoin.click();
     }
 
     public String getAllertContentMassage (){
@@ -98,4 +91,10 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         passwordRegistration.sendKeys(password);
         buttonWillJoin.click();
     }
+
+    public LinkedinRequestPasswordReset setForgotYourPassword (){
+        forgotYourPassword.click();
+        return new LinkedinRequestPasswordReset(webDriver);
+    }
+
 }

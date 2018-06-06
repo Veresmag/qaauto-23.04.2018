@@ -22,14 +22,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LinkedinLoginPage {
+public class page.LinkedinLoginPage {
     private WebDriver webDriver;
 
     private WebElement emailField;
     private WebElement passwordField;
     private WebElement signInButton;
 
-    public LinkedinLoginPage(WebDriver webDriver){
+    public page.LinkedinLoginPage(WebDriver webDriver){
         this.webDriver=webDriver;
         initElements();
     }

@@ -89,3 +89,30 @@
                  "https://www.linkedin.com/uas/login-submit",
                  "Incorrect activation of the login form.");
     }
+
+
+
+//    public page.LinkedinHomePage login(String email, String password) {
+//        emailField.sendKeys(email);
+//        passwordField.sendKeys(password);
+//        signInButton.click();
+////        return PageFactory.initElements(webDriver, page.LinkedinHomePage.class);
+//        return new page.LinkedinHomePage(webDriver);
+//    }
+    
+    //        return PageFactory.initElements(webDriver, page.LinkedinErrorPage.class);
+    
+    //    abstract boolean isPageLoaded();
+    
+    
+    
+     public static void main(String[] args) {
+            String messageSubject = "Яр, данное сообщение содержит ссылку для изменения пароля";
+            String messageTo = "testeverad2@gmail.com";
+            String messageFrom = "security-noreply@linkedin.com";
+    
+            util.GMailService gMailService = new util.GMailService("testeverad2@gmail.com","everad123");
+            gMailService.connect();
+            String message = gMailService.waitMessage(messageSubject, messageTo, messageFrom, 60);
+            System.out.println("Content: " + message);
+        }
